@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jai Academy - Excel in Competitive Exams | Sonipat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0A1931;
+            --navy-light: #112240;
+            --navy-soft: #1a365d;
+            --saffron: #FF6B00;
+            --saffron-light: #FF9933;
+            --saffron-pale: #FFF4E6;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            line-height: 1.7;
+            color: var(--gray-800);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; font-weight: 700; line-height: 1.2; color: var(--navy); }
+        
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10, 25, 49, 0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; height: 72px; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--saffron); }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: var(--saffron-light); }
+        .nav-links a::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px; background: var(--saffron); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        .mobile-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+        /* Banner / Spotlight */
+        section { position: relative; }
+        .spotlight {
+            display: flex; align-items: center; min-height: 100vh; padding: 100px 0;
+            opacity: 0; transform: translateY(40px); transition: opacity 1s ease, transform 1s ease;
+        }
+        .spotlight.visible { opacity: 1; transform: translateY(0); }
+        .spotlight .content { flex: 1; padding: 0 5vw; max-width: 650px; }
+        .spotlight .image { flex: 1; height: 100vh; min-height: 500px; position: relative; overflow: hidden; }
+        .spotlight .image img { width: 100%; height: 100%; object-fit: cover; }
+        .spotlight.orient-right { flex-direction: row-reverse; background: var(--gray-50); }
+        .spotlight.orient-left .image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,25,49,0.1), transparent); }
+        
+        .banner { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: white; min-height: 100vh; }
+        .banner .content h1 { font-size: clamp(2.5rem, 5vw, 4rem); color: white; margin-bottom: 1.5rem; line-height: 1.1; }
+        .banner .content h1 span { color: var(--saffron); display: block; }
+        .banner .subtitle { font-size: 1.25rem; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem; font-weight: 300; }
+        .banner .image { clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%); }
+        .banner .image::before { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, rgba(255,107,0,0.3), transparent); mix-blend-mode: overlay; z-index: 2; }
+
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s; cursor: pointer; border: none; font-size: 1rem; }
+        .btn-primary { background: var(--saffron); color: white; box-shadow: 0 8px 24px rgba(255,107,0,0.3); }
+        .btn-primary:hover { background: var(--saffron-light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,107,0,0.4); }
+        .btn-outline { border: 2px solid var(--navy); color: var(--navy); background: transparent; }
+        .btn-outline:hover { background: var(--navy); color: white; }
+
+        .section-label { display: inline-block; color: var(--saffron); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.85rem; margin-bottom: 1rem; }
+        .spotlight h2 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 1.5rem; }
+        .spotlight p { font-size: 1.05rem; color: var(--gray-600); margin-bottom: 1.25rem; }
+
+        /* Wrapper sections */
+        .wrapper { padding: 100px 24px; max-width: 1200px; margin: 0 auto; opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        .wrapper.visible { opacity: 1; transform: translateY(0); }
+        .wrapper.alt { background: var(--gray-50); }
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
+        .section-header h2 { font-size: clamp(2rem, 4vw, 2.5rem); margin-bottom: 1rem; }
+        .section-header p { color: var(--gray-600); font-size: 1.1rem; }
+
+        /* Grid cards */
+        .grid { display: grid; gap: 24px; }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+
+        .feature-card { background: white; padding: 32px; border-radius: 16px; border: 1px solid var(--gray-100); transition: all 0.3s; height: 100%; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(10,25,49,0.08); border-color: var(--saffron-pale); }
+        .feature-icon { width: 56px; height: 56px; background: var(--saffron-pale); color: var(--saffron); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 1.25rem; margin-bottom: 12px; }
+        .feature-card p { color: var(--gray-600); font-size: 0.95rem; }
+
+        /* Courses */
+        .course-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.4s; border: 1px solid var(--gray-100); }
+        .course-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(10,25,49,0.12); }
+        .course-top { height: 6px; background: linear-gradient(90deg, var(--saffron), var(--saffron-light)); }
+        .course-body { padding: 28px; }
+        .course-tag { display: inline-block; background: var(--navy); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 12px; }
+        .course-body h3 { font-size: 1.4rem; margin-bottom: 10px; }
+        .course-price { color: var(--saffron); font-weight: 700; font-size: 1.5rem; margin: 16px 0; }
+        .course-price span { font-size: 0.9rem; color: var(--gray-600); font-weight: 500; }
+
+        /* Faculty */
+        .faculty-card { text-align: center; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: all 0.3s; }
+        .faculty-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .faculty-avatar { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), var(--navy-light)); display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; margin: 0 auto 20px; border: 4px solid var(--saffron-pale); overflow: hidden; }
+        .faculty-avatar img, .author-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .faculty-card h3 { margin-bottom: 5px; }
+        .faculty-role { color: var(--saffron); font-weight: 600; margin-bottom: 10px; }
+        .faculty-exp { color: var(--gray-600); font-size: 0.9rem; }
+
+        /* Success Stories */
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .testimonial { background: white; padding: 30px; border-radius: 16px; border-left: 4px solid var(--saffron); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .testimonial-text { font-style: italic; color: var(--gray-800); margin-bottom: 20px; position: relative; }
+        .testimonial-text::before { content: '"'; font-size: 3rem; color: var(--saffron-pale); position: absolute; top: -20px; left: -10px; font-family: Georgia, serif; }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .author-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--navy); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; overflow: hidden; flex-shrink: 0; }
+        .author-info h4 { font-size: 1rem; margin-bottom: 2px; }
+        .author-info p { font-size: 0.85rem; color: var(--saffron); font-weight: 600; }
+
+        /* Pricing */
+        .pricing-table { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08); max-width: 900px; margin: 0 auto; }
+        .pricing-header { background: var(--navy); color: white; padding: 24px; text-align: center; }
+        .pricing-header h3 { color: white; font-size: 1.5rem; }
+        .pricing-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1fr; padding: 20px 24px; border-bottom: 1px solid var(--gray-100); align-items: center; }
+        .pricing-row:last-child { border: none; }
+        .pricing-row.header { background: var(--gray-50); font-weight: 600; color: var(--navy); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .timing-box { background: var(--saffron-pale); color: var(--navy); padding: 12px 20px; border-radius: 12px; text-align: center; margin-top: 30px; font-weight: 600; }
+
+        /* FAQ */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { background: white; margin-bottom: 16px; border-radius: 12px; overflow: hidden; border: 1px solid var(--gray-100); }
+        .faq-question { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--navy); transition: background 0.2s; }
+        .faq-question:hover { background: var(--gray-50); }
+        .faq-question i { color: var(--saffron); transition: transform 0.3s; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0 24px; }
+        .faq-item.active .faq-answer { max-height: 200px; padding: 0 24px 20px; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-answer p { color: var(--gray-600); }
+
+        /* Contact */
+        .contact-wrapper { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; max-width: 1100px; margin: 0 auto; }
+        .contact-form { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--navy); }
+        .form-control { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-100); border-radius: 10px; font-family: inherit; font-size: 1rem; transition: border 0.3s; }
+        .form-control:focus { outline: none; border-color: var(--saffron); box-shadow: 0 0 0 3px var(--saffron-pale); }
+        textarea.form-control { min-height: 120px; resize: vertical; }
+        .contact-info { padding-top: 20px; }
+        .contact-info h3 { margin-bottom: 20px; }
+        .contact-item { display: flex; gap: 16px; margin-bottom: 24px; }
+        .contact-icon { width: 48px; height: 48px; background: var(--saffron-pale); color: var(--saffron); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        /* Footer */
+        footer { background: var(--navy); color: rgba(255,255,255,0.8); padding: 40px 24px; text-align: center; }
+        footer p { margin: 0; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .spotlight { flex-direction: column !important; min-height: auto; padding: 80px 0 0; }
+            .spotlight .content { padding: 40px 24px; max-width: 100%; text-align: center; }
+            .spotlight .image { width: 100%; height: 400px; min-height: auto; }
+            .banner .image { clip-path: none; }
+            .contact-wrapper { grid-template-columns: 1fr; gap: 40px; }
+            .pricing-row { grid-template-columns: 1fr; gap: 8px; text-align: center; padding: 24px; }
+            .pricing-row.header { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 72px; left: 0; width: 100%; background: var(--navy); flex-direction: column; padding: 20px; gap: 0; transform: translateY(-150%); transition: transform 0.3s; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .nav-links.active { transform: translateY(0); }
+            .nav-links a { padding: 14px 0; display: block; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .mobile-toggle { display: block; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .wrapper { padding: 70px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo"><i class="fas fa-graduation-cap"></i> Jai <span>Academy</span></a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#faculty">Faculty</a></li>
+                <li><a href="#success">Success</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <section id="home" class="spotlight banner orient-right">
+        <div class="content">
+            <h1>Excel in <span>Competitive Exams</span></h1>
+            <p class="subtitle">Master Mathematics with Expert Guidance at Jai Academy</p>
+            <a href="#courses" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="image">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" alt="Students studying">
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="spotlight orient-left">
+        <div class="content">
+            <span class="section-label">About Us</span>
+            <h2>Premier Coaching in Sonipat</h2>
+            <p>Jai Academy is a premier coaching center in Sonipat dedicated to helping students crack competitive exams. With over 5 years of experience, we've helped hundreds of students achieve their dreams through our expert faculty, proven methodology, and personalized attention.</p>
+            <p>Our commitment to excellence and student success has made us the preferred choice for competitive exam preparation in the region.</p>
+            <a href="#contact" class="btn btn-outline" style="margin-top: 10px;">Visit Center</a>
+        </div>
+        <div class="image">
+            <img src="123.JPG" alt="Classroom">
+        </div>
+    </section>
+
+    <!-- Who We Are -->
+    <section class="spotlight orient-right">
+        <div class="content">
+            <span class="section-label">Who We Are</span>
+            <h2>Building Futures Since 2019</h2>
+            <p>Jai Academy was founded with a vision to provide quality education to aspiring students preparing for SSC, Banking, Railways, and other government competitive examinations. We specialize in Mathematics, Physics, Chemistry, Biology and Reasoning.</p>
+            <p>Our experienced faculty members are dedicated to nurturing talent and building strong conceptual foundations that last beyond exams.</p>
+        </div>
+        <div class="image">
+            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop" alt="Teachers">
+        </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="spotlight orient-left">
+        <div class="content">
+            <span class="section-label">Our Mission</span>
+            <h2>Empowering Every Aspirant</h2>
+            <p>To empower students with knowledge, skills, and confidence to excel in competitive exams through innovative teaching methods, regular practice, and continuous mentorship.</p>
+            <p>We strive to make high-quality coaching accessible and affordable for students from all backgrounds, bridging the gap between aspiration and achievement.</p>
+        </div>
+        <div class="image">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2132&auto=format&fit=crop" alt="Mission">
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="why" class="wrapper">
+        <div class="section-header">
+            <span class="section-label">Why Choose Us</span>
+            <h2>The Jai Academy Advantage</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div><h3>Expert Faculty</h3><p>Learn from experienced teachers including H. Balyan with 5+ years of specialized competitive exam training.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>Small Batch Size</h3><p>Limited 20-25 students per batch ensures personalized attention and doubt resolution for everyone.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-book-open"></i></div><h3>Updated Study Material</h3><p>Comprehensive notes, practice sets and previous year papers aligned with latest exam patterns.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-clipboard-check"></i></div><h3>Regular Mock Tests</h3><p>Weekly tests, full-length mocks and detailed performance analysis to track your progress.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-indian-rupee-sign"></i></div><h3>Affordable Fees</h3><p>Quality education at honest pricing with easy installment options. No compromise on teaching.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-trophy"></i></div><h3>Proven Results</h3><p>Hundreds of selections in SSC CGL, Banking, Railways with multiple top 100 AIR ranks.</p></div>
+        </div>
+    </section>
+
+    <!-- Facilities -->
+    <section class="wrapper alt">
+        <div class="section-header">
+            <span class="section-label">Facilities</span>
+            <h2>Everything You Need to Succeed</h2>
+        </div>
+        <div class="grid grid-3">
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-snowflake"></i></div><h3>AC Classrooms</h3><p>Comfortable, well-lit and distraction-free learning environment for focused preparation.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-book"></i></div><h3>Library Access</h3><p>Well-stocked library with reference books, magazines and quiet study space.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-laptop"></i></div><h3>Online Test Series</h3><p>24/7 access to our digital portal with 5000+ questions and timed mock tests.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-comments"></i></div><h3>Doubt Sessions</h3><p>Daily dedicated doubt counters and one-on-one mentoring with faculty.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3>Progress Tracking</h3><p>Monthly parent-teacher meetings and detailed performance reports.</p></div>
+            <div class="feature-card"><div class="feature-icon"><i class="fas fa-clock"></i></div><h3>Flexible Batches</h3><p>Morning and evening batches to suit college students and working aspirants.</p></div>
+        </div>
+    </section>
+
+    <!-- Courses -->
+    <section id="courses" class="wrapper">
+        <div class="section-header">
+            <span class="section-label">Our Courses</span>
+            <h2>Designed for Competitive Success</h2>
+        </div>
+        <div class="grid grid-2">
+            <div class="course-card">
+                <div class="course-top"></div>
+                <div class="course-body">
+                    <span class="course-tag">Most Popular</span>
+                    <h3>Mathematics Mastery</h3>
+                    <p>Complete Arithmetic, Advanced Maths, Algebra, Geometry, Trigonometry & Data Interpretation for SSC CGL, CHSL, Banking, Railways.</p>
+                    <div class="course-price">₹8,000 <span>/ 6 Months</span></div>
+                    <a href="#contact" class="btn btn-primary" style="width: 100%; justify-content: center;">Join Now - शामिल हों</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-top"></div>
+                <div class="course-body">
+                    <span class="course-tag">Foundation</span>
+                    <h3>Physics Fundamentals</h3>
+                    <p>Mechanics, Heat, Light, Sound, Electricity, Magnetism and Modern Physics with 1000+ numerical practice questions.</p>
+                    <div class="course-price">₹10,000 <span>/ 6 Months</span></div>
+                    <a href="#contact" class="btn btn-outline" style="width: 100%; justify-content: center;">Enroll Now</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-top"></div>
+                <div class="course-body">
+                    <span class="course-tag">Conceptual</span>
+                    <h3>Chemistry Mastery</h3>
+                    <p>Physical, Organic and Inorganic Chemistry simplified with tricks, reactions, and NCERT-based competitive preparation.</p>
+                    <div class="course-price">₹10,000 <span>/ 6 Months</span></div>
+                    <a href="#contact" class="btn btn-outline" style="width: 100%; justify-content: center;">Enroll Now</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-top"></div>
+                <div class="course-body">
+                    <span class="course-tag">NCERT Based</span>
+                    <h3>Biology Excellence</h3>
+                    <p>Comprehensive Botany & Zoology covering cell biology, genetics, ecology, human physiology for SSC and other exams.</p>
+                    <div class="course-price">₹10,000 <span>/ 6 Months</span></div>
+                    <a href="#contact" class="btn btn-outline" style="width: 100%; justify-content: center;">Enroll Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty -->
+    <section id="faculty" class="wrapper alt">
+        <div class="section-header">
+            <span class="section-label">Our Faculty</span>
+            <h2>Learn From The Best</h2>
+        </div>
+        <div class="grid grid-2" style="max-width: 800px; margin: 0 auto;">
+            <div class="faculty-card">
+                <div class="faculty-avatar"><img src="C:/Users/Public/jai4/t1.JPG" alt="H. Balyan"></div>
+                <h3>H. Balyan</h3>
+                <div class="faculty-role">Mathematics Expert</div>
+                <p class="faculty-exp">5+ years experience in teaching Quantitative Aptitude for SSC & Banking. Known for short tricks and concept clarity.</p>
+            </div>
+            <div class="faculty-card">
+                <div class="faculty-avatar"><img src="C:/Users/Public/jai4/t2.JPG" alt="Neha Sharma"></div>
+                <h3>Neha Sharma</h3>
+                <div class="faculty-role">Reasoning & Logic</div>
+                <p class="faculty-exp">3+ years experience. Specialist in logical reasoning, puzzles, and analytical ability for competitive exams.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section id="success" class="wrapper">
+        <div class="section-header">
+            <span class="section-label">Student Success Stories</span>
+            <h2>Our Results Speak</h2>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <p class="testimonial-text">Jai Academy's mathematics classes transformed my preparation. H. Balyan sir's tricks helped me score 48/50 in quant.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar"><img src="C:/Users/Public/jai4/s1.JPG" alt="Rohan Kumar"></div>
+                    <div class="author-info"><h4>Rohan Kumar</h4><p>SSC CGL AIR 45</p></div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">The personalized attention and regular mocks gave me the confidence to crack SBI PO in first attempt.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar"><img src="C:/Users/Public/jai4/s2.JPG" alt="Priya Singh"></div>
+                    <div class="author-info"><h4>Priya Singh</h4><p>SBI PO Selected</p></div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">Best coaching in Sonipat. Affordable fees and excellent teaching methodology. Cleared Bank Clerk easily.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar"><img src="C:/Users/Public/jai4/s3.JPG" alt="Amit Patel"></div>
+                    <div class="author-info"><h4>Amit Patel</h4><p>Bank Clerk</p></div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">Doubt sessions and study material are top-notch. The test series is exactly like real exam pattern.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar"><img src="C:/Users/Public/jai4/s4.JPG" alt="Anjali Verma"></div>
+                    <div class="author-info"><h4>Anjali Verma</h4><p>Railway AIR 78</p></div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">Thanks to Jai Academy, I achieved my dream of government job. Special thanks to entire faculty team.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar"><img src="C:/Users/Public/jai4/s5.JPG" alt="Vikram Singh"></div>
+                    <div class="author-info"><h4>Vikram Singh</h4><p>SSC CGL AIR 62</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="wrapper alt">
+        <div class="section-header">
+            <span class="section-label">Course Pricing</span>
+            <h2>Simple & Transparent Fees</h2>
+        </div>
+        <div class="pricing-table">
+            <div class="pricing-header"><h3>All Courses - 6 Months Duration</h3></div>
+            <div class="pricing-row header">
+                <div>Course</div><div>Fees</div><div>Teacher</div><div>Duration</div>
+            </div>
+            <div class="pricing-row">
+                <div><strong>Mathematics</strong></div><div style="color: var(--saffron); font-weight: 700;">₹10,000</div><div>H. Balyan</div><div>6 Months</div>
+            </div>
+            <div class="pricing-row">
+                <div><strong>Physics</strong></div><div style="color: var(--saffron); font-weight: 700;">₹10,000</div><div>Expert Faculty</div><div>6 Months</div>
+            </div>
+            <div class="pricing-row">
+                <div><strong>Chemistry</strong></div><div style="color: var(--saffron); font-weight: 700;">₹10,000</div><div>Expert Faculty</div><div>6 Months</div>
+            </div>
+            <div class="pricing-row">
+                <div><strong>Biology</strong></div><div style="color: var(--saffron); font-weight: 700;">₹10,000</div><div>Expert Faculty</div><div>6 Months</div>
+            </div>
+        </div>
+        <div class="timing-box">
+            <i class="fas fa-clock"></i> Batch Timings: Morning 5:00-7:00 AM | Evening 4:00-6:00 PM
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="wrapper">
+        <div class="section-header">
+            <span class="section-label">FAQ</span>
+            <h2>Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">Which competitive exams do you prepare for? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer"><p>We prepare students for SSC CGL, CHSL, CPO, Banking PO/Clerk, Railway NTPC/Group D, and other state-level competitive exams with focus on Mathematics and Science.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What is the batch size and admission process? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer"><p>We maintain small batches of 20-25 students. Visit our Sonipat center for counseling, take 2 free demo classes, then complete registration.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do you provide study material and test series? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer"><p>Yes, comprehensive printed notes, daily practice sheets, and online test series with 5000+ questions are included in the fees.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Are demo classes available? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer"><p>Yes, we offer 2 free demo classes for all new students to experience our teaching methodology before enrolling.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What are the fees payment options? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer"><p>Fees can be paid in full or in two easy installments. We accept cash, UPI, and bank transfer. No extra charges.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="wrapper alt">
+        <div class="section-header">
+            <span class="section-label">Get In Touch</span>
+            <h2>Have questions? We'd love to help.</h2>
+        </div>
+        <div class="contact-wrapper">
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" placeholder="Tell us about your exam preparation needs..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+            <div class="contact-info">
+                <h3>Visit Our Center</h3>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div><strong>Address</strong><br>Sonipat, Haryana, India</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                    <div><strong>Call Us</strong><br>+91 98765 43210</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                    <div><strong>Office Hours</strong><br>Mon - Sat: 7:00 AM - 8:00 PM</div>
+                </div>
+                <div style="margin-top: 30px; padding: 20px; background: var(--saffron-pale); border-radius: 12px;">
+                    <strong style="color: var(--navy);"><i class="fas fa-bullhorn"></i> Admissions Open!</strong>
+                    <p style="margin: 8px 0 0; font-size: 0.95rem;">New batches starting every Monday. Book your free demo today.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Jai Academy, Sonipat. All rights reserved. | Designed for Competitive Exam Excellence</p>
+    </footer>
+
+    <script>
+        // Mobile nav
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileToggle.innerHTML = navLinks.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Smooth scroll active link
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                if(this.getAttribute('href').length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if(target) {
+                        window.scrollTo({ top: target.offsetTop - 70, behavior: 'smooth' });
+                        navLinks.classList.remove('active');
+                        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+        });
+
+        // Scroll spy
+        const sections = document.querySelectorAll('section[id]');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(sec => {
+                const top = window.scrollY;
+                if(top >= sec.offsetTop - 100) current = sec.getAttribute('id');
+            });
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href') === '#' + current) link.classList.add('active');
+            });
+        });
+
+        // Intersection Observer for fade
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.spotlight, .wrapper').forEach(el => observer.observe(el));
+
+        // FAQ
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                const wasActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if(!wasActive) item.classList.add('active');
+            });
+        });
+
+        // Form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const original = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.style.background = '';
+                    this.reset();
+                    alert('Thank you for contacting Jai Academy! We will call you within 24 hours.');
+                }, 2000);
+            }, 1200);
+        });
+
+        // Initial load
+        window.addEventListener('load', () => {
+            document.querySelector('.banner').classList.add('visible');
+        });
+    </script>
+</body>
+</html>
